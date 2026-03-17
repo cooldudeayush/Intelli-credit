@@ -1,20 +1,44 @@
-# Intelli-Credit (Hackathon Prototype)
+# Intelli-Credit
 
-Intelli-Credit is a presentation-ready AI-assisted corporate credit appraisal prototype for Indian lending use cases.
-The prototype is centered on `app.py`, with the analytical workflow split into focused modules under `modules/`.
+Intelli-Credit is a hackathon prototype for AI-assisted corporate credit appraisal in Indian lending workflows. It combines structured financial inputs, unstructured documents, analyst notes, explainable scoring, and an ML-assisted risk view to generate a credit recommendation and a downloadable Credit Appraisal Memo (CAM).
 
-## 1. Quick Run
+The goal of the prototype is to reduce the manual effort involved in stitching together GST data, bank statements, annual reports, legal signals, and qualitative due diligence into a single decision-support workflow.
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-python -m streamlit run app.py
-```
+## What Problem It Solves
 
-If your local `.venv` was created from the Microsoft Store Python shim and stops launching, recreate it from a working interpreter before submission.
+Corporate credit appraisal is usually fragmented across multiple data sources:
 
-## 2. Repository Layout
+- Structured financial data such as bank statements, GST summaries, ITRs, and shareholding files
+- Unstructured documents such as annual reports, legal notices, sanction letters, and rating reports
+- Qualitative inputs such as site visit observations, management notes, and external intelligence
+
+In practice, analysts must manually reconcile these sources, identify red flags, and prepare a credit memo. Intelli-Credit turns that into a single explainable workflow.
+
+## Key Features
+
+- Multi-source ingestion for CSV, XLSX, TXT, and PDF inputs
+- PDF parsing with native extraction and OCR fallback
+- GST vs bank reconciliation with mismatch and circular-pattern checks
+- Local RAG pipeline over unstructured documents
+- Research and qualitative signal aggregation
+- Explainable Five Cs scorecard
+- ML-assisted risk view using engineered features
+- Hybrid recommendation combining scorecard and ML outputs
+- CAM preview with TXT, DOCX, and PDF export
+- Demo mode with prebuilt borrower scenarios for reliable walkthroughs
+
+## End-to-End Workflow
+
+1. Ingest borrower inputs from structured files, PDFs, and analyst notes
+2. Extract text and signals from uploaded documents
+3. Reconcile GST turnover against bank inflows
+4. Retrieve supporting evidence from unstructured text using local RAG
+5. Incorporate qualitative and Indian-context risk indicators
+6. Score the borrower using the Five Cs framework
+7. Generate an ML-assisted risk view from engineered features
+8. Produce a final hybrid decision, suggested limit, pricing band, and CAM
+
+## Repository Structure
 
 ```text
 app.py
@@ -24,156 +48,106 @@ requirements.txt
 README.md
 ```
 
-- `app.py`: Streamlit entrypoint for the prototype demo
-- `modules/`: ingestion, scoring, RAG, recommendation, and export logic
-- `sample_data/`: demo inputs used by the built-in scenarios
+- `app.py`: Streamlit entrypoint and UI
+- `modules/`: ingestion, document intelligence, scoring, ML, recommendation, RAG, and export logic
+- `sample_data/`: bundled demo inputs and manual upload packs for evaluation
 
-Generated files, caches, and virtual environments should stay out of Git.
+## How To Run
 
-## 3. Core Architecture
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python -m streamlit run app.py
+```
 
-1. Multi-source ingestion (structured + unstructured + notes)
-2. OCR-aware PDF parsing fallback
-3. Source coverage tracking
-4. Local RAG over unstructured documents
-5. Research Agent and Indian-context signal layers
-6. Five Cs scorecard (transparent rules)
-7. ML-assisted recommendation layer (hybrid)
-8. CAM generation + DOCX/PDF export
+If your virtual environment was created from the Microsoft Store Python shim and stops launching, recreate it from a working Python installation before running the app.
 
-## 4. Round 3: Scorecard + ML Hybrid Recommendation
+## How To Evaluate The Prototype
 
-### Scorecard layer (existing, preserved)
-- Five Cs: Character, Capacity, Capital, Collateral, Conditions
-- Explainable penalties/boosts
-- Rule-based recommendation baseline
+There are two simple ways to test the app.
 
-### ML layer (new)
-- Module: `modules/ml_hybrid.py`
-- Local model: `RandomForestClassifier` (scikit-learn)
-- Trained on synthetic prototype data (documented and deterministic)
-- Produces:
-  - ML decision (`Lend/Review/Reject`)
-  - confidence score
-  - class probabilities
-  - top feature importance list
+### Option 1: Demo Mode
 
-### Hybrid layer (new)
-- Module: `modules/hybrid_recommendation.py`
-- Combines scorecard decision + ML decision
-- Conflict policy is transparent and conservative with confidence gating
-- Outputs:
-  - final hybrid decision
-  - hybrid limit
-  - hybrid pricing band
-  - alignment/override reason
+Use the built-in demo scenarios inside the app:
 
-## 5. ML Features Used
+- Good Borrower
+- Borderline / Manual Review
+- Risky Borrower
 
-Engineered in `engineer_features(...)`:
-- `character_score`
-- `capacity_score`
-- `capital_score`
-- `collateral_score`
-- `conditions_score`
-- `total_score`
-- `gst_bank_mismatch_ratio`
-- `circular_trading_flag`
-- `litigation_count`
-- `governance_flag`
-- `debt_stress_flag`
-- `operational_stress_flag`
-- `sector_risk_flag`
-- `promoter_risk_flag`
-- `shareholding_concentration_flag`
-- `mca_compliance_flag`
-- `qualitative_positive_adjustment`
-- `qualitative_negative_adjustment`
-- `rag_signal_count`
-- `structured_signal_count`
-- `external_signal_count`
-- `primary_due_diligence_signal_count`
+This is the fastest way to see the complete workflow end to end.
 
-Defaults are applied safely when inputs are missing.
+### Option 2: Manual File Upload
 
-## 6. Local RAG (Round 2, retained)
+Use the verification files under `sample_data/upload_packs`:
 
-Module: `modules/rag_engine.py`
+- `sample_data/upload_packs/good_case`
+- `sample_data/upload_packs/risky_case`
 
-Indexed unstructured sources:
-- Annual Report
-- Legal Notice
-- Sanction Letter
-- Rating Report
-- Board Minutes
-- ITR/Shareholding PDFs when provided as PDF text
+Suggested upload flow:
 
-Flow:
-- clean text -> chunk -> local vectorization -> theme retrieval
-- no remote API required
-- metadata per chunk includes source and chunk id
+1. Turn `Demo Mode` off
+2. Upload `bank_statement.csv`
+3. Upload `gst_summary.csv`
+4. Upload `external_notes.txt`
+5. Paste `primary_notes.txt` into the primary due diligence box
+6. Optionally upload supporting PDFs such as annual report or legal notice if available locally
+7. Click `Run Intelli-Credit Analysis`
 
-## 7. Research Agent Panel (Round 2, retained)
+## Main Modules
 
-Module: `modules/research_agent.py`
+- `modules/ingestion.py`: file loading, PDF parsing, OCR fallback, and source summaries
+- `modules/document_intel.py`: signal extraction from narrative documents
+- `modules/reconciliation.py`: GST-bank reconciliation and transaction pattern checks
+- `modules/rag_engine.py`: local retrieval over uploaded unstructured text
+- `modules/research_agent.py`: consolidated research and qualitative insight cards
+- `modules/scoring.py`: explainable Five Cs scoring logic
+- `modules/ml_hybrid.py`: synthetic-data-backed prototype ML view and feature engineering
+- `modules/hybrid_recommendation.py`: final decision fusion logic
+- `modules/cam_generator.py`: CAM text construction
+- `modules/cam_export.py`: DOCX and PDF export
 
-Provides structured cards for:
-- promoter/management risk
-- sector headwinds
-- litigation summary
-- regulatory alerts
-- MCA notes
-- external notes
-- primary due diligence notes
+## Why The Prototype Is Explainable
 
-Includes a `Generate Research Summary` action for presentation use.
+This project is intentionally not built as a black-box decision engine.
 
-## 8. Indian Context Signals (Round 2, retained)
+- The scorecard logic is rule-based and visible
+- Feature engineering for the ML layer is transparent
+- The hybrid decision shows how scorecard and ML outputs align or disagree
+- CAM output includes rationale, findings, and supporting observations
 
-Module: `modules/indian_context.py`
+This makes the prototype easier to present, audit, and discuss in a lending context.
 
-Cards include:
-- GST vs bank mismatch
-- circular trading / revenue inflation
-- GSTR-2A vs 3B placeholder
-- CIBIL commercial placeholder
-- MCA compliance flag
-- promoter/related-party indicator
-- shareholding concentration
-- legal/e-courts proxy signal
-- sector regulatory alert
+## Tech Stack
 
-Each card is marked as real logic, rules+notes, structured rule, or placeholder.
+- Python
+- Streamlit
+- pandas
+- pdfplumber
+- PyPDF2
+- openpyxl
+- scikit-learn
+- python-docx
+- reportlab
+- pytesseract
+- feedparser
 
-## 9. CAM Export (Round 3)
+## Current Scope And Limitations
 
-- CAM preview remains in app.
-- Export options:
-  - TXT
-  - DOCX (`modules/cam_export.py`)
-  - PDF (`modules/cam_export.py`, ReportLab-based)
+- This is a hackathon prototype, not a production underwriting system
+- The ML layer uses synthetic training data for demonstration
+- Some India-specific signals are implemented as placeholders or proxy rules
+- Live research is optional and designed to fail gracefully
+- Final credit decisions should be treated as prototype recommendations, not production approvals
 
-CAM includes scorecard vs ML summary and final hybrid recommendation sections.
+## Future Improvements
 
-## 10. Optional Live Research (Round 3)
+- Replace synthetic ML data with real historical credit outcomes
+- Add live integrations for MCA, court, bureau, and regulatory data
+- Introduce stronger document classification and extraction pipelines
+- Add optional LLM-based narrative summarization while keeping core decisions explainable
+- Expand from single-borrower review to portfolio monitoring
 
-Module: `modules/live_research.py`
+## Submission Note
 
-- Uses optional RSS fetch (`feedparser`) for lightweight live headlines.
-- Toggle: `Live Research Mode`.
-- Graceful fallback to manual/mock mode when unavailable.
-- Core app remains fully functional offline.
-
-## 11. Dependencies Added Across Rounds
-
-- `python-docx`
-- `pytesseract` (OCR path)
-- `scikit-learn` (ML layer)
-- `reportlab` (PDF CAM export)
-- `feedparser` (optional live news)
-
-## 12. Notes
-
-- This is a hackathon prototype, not a production underwriting system.
-- Synthetic ML data is used for demonstration only.
-- Recommendation remains explainable: scorecard + ML + hybrid conflict rationale are all visible.
+This repository is intentionally kept focused on the working prototype, the supporting modules, and the sample verification inputs needed to run and evaluate the app.
