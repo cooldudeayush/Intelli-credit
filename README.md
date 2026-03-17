@@ -4,6 +4,13 @@ An end-to-end credit decision support prototype for Indian lending workflows. In
 
 ---
 
+## Live Demo
+
+- **Deployed App:** https://intelli-credit-genx.streamlit.app/
+- **GitHub Repository:** https://github.com/cooldudeayush/Intelli-credit
+
+---
+
 ## Features
 
 - **Multi-source ingestion** - Bank statements, GST summaries, ITR/shareholding files, PDFs, and analyst notes
