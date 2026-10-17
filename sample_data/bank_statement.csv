@@ -1,0 +1,21 @@
+date,description,inflow,outflow,balance
+2025-04-03,Customer collection - North region,12500000,0,54100000
+2025-04-07,Vendor payment - Steel,0,4800000,49300000
+2025-04-18,Customer collection - OEM account,9800000,0,59100000
+2025-05-04,Customer collection - Exports,13200000,0,72300000
+2025-05-11,Salary & payroll,0,2100000,70200000
+2025-05-23,Raw material purchase,0,6400000,63800000
+2025-06-06,Customer collection - Domestic,11600000,0,75400000
+2025-06-16,GST payment,0,1800000,73600000
+2025-06-28,Customer collection - Dealer network,12100000,0,85700000
+2025-07-05,Interest servicing,0,900000,84800000
+2025-07-14,Customer collection - Auto client,14200000,0,99000000
+2025-07-29,Vendor payment - Logistics,0,3700000,95300000
+2025-08-08,Customer collection - Institutional,13800000,0,109100000
+2025-08-19,Capex advance,0,6200000,102900000
+2025-08-30,Customer collection - Exports,14900000,0,117800000
+2025-09-09,Raw material purchase,0,7100000,110700000
+2025-09-18,Customer collection - OEM account,13500000,0,124200000
+2025-09-30,GST payment,0,2300000,121900000
+2025-10-11,Customer collection - Domestic,12800000,0,134700000
+2025-10-24,Vendor payment - Utilities,0,1900000,132800000

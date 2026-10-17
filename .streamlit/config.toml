@@ -1,0 +1,21 @@
+# Intelli-Credit theme.
+# Pinned so the app looks identical on any machine, rather than inheriting
+# whatever theme the viewer's Streamlit happens to default to.
+
+[theme]
+base = "light"
+
+# Deep institutional blue — the register of a credit memo, not a consumer app.
+primaryColor = "#1B4F8C"
+
+backgroundColor = "#F6F8FC"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#111C2E"
+
+font = "sans serif"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false

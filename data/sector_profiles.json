@@ -1,0 +1,80 @@
+{
+  "_comment": "Baseline sector risk profiles for Indian mid-market lending. These are analyst-maintained reference data, not model output: update last_reviewed when the view changes. risk_points is a 0-20 headwind score; scoring.py applies half of it as a Conditions penalty. regulatory_risk drives the sector regulatory alert card.",
+  "_schema_version": 1,
+
+  "sectors": {
+    "Manufacturing": {
+      "headwind": "Input cost volatility and export demand softness.",
+      "risk_points": 12,
+      "regulatory_risk": "Low",
+      "watch_items": ["Commodity price pass-through", "Export order book depth", "Working capital cycle"],
+      "last_reviewed": "2026-09-13",
+      "source": "Analyst baseline - internal credit policy view"
+    },
+    "Infrastructure": {
+      "headwind": "Execution delays and working capital stretch.",
+      "risk_points": 14,
+      "regulatory_risk": "Moderate",
+      "watch_items": ["Government receivable ageing", "Arbitration exposure", "Project execution milestones"],
+      "last_reviewed": "2026-09-13",
+      "source": "Analyst baseline - internal credit policy view"
+    },
+    "Retail": {
+      "headwind": "Demand concentration and margin pressure.",
+      "risk_points": 11,
+      "regulatory_risk": "Low",
+      "watch_items": ["Same-store sales trend", "Inventory ageing", "Discount intensity"],
+      "last_reviewed": "2026-09-13",
+      "source": "Analyst baseline - internal credit policy view"
+    },
+    "Pharma": {
+      "headwind": "Regulatory observations and price caps.",
+      "risk_points": 10,
+      "regulatory_risk": "Moderate",
+      "watch_items": ["Regulatory inspection outcomes", "Essential medicines price caps", "Export approvals"],
+      "last_reviewed": "2026-09-13",
+      "source": "Analyst baseline - internal credit policy view"
+    },
+    "IT Services": {
+      "headwind": "Client budget cuts in key geographies.",
+      "risk_points": 9,
+      "regulatory_risk": "Low",
+      "watch_items": ["Client concentration", "Billing rate pressure", "Attrition"],
+      "last_reviewed": "2026-09-13",
+      "source": "Analyst baseline - internal credit policy view"
+    },
+    "Textiles": {
+      "headwind": "Cotton price swings and competition from lower-cost geographies.",
+      "risk_points": 13,
+      "regulatory_risk": "Low",
+      "watch_items": ["Raw cotton prices", "Export incentive changes", "Power cost exposure"],
+      "last_reviewed": "2026-09-13",
+      "source": "Analyst baseline - internal credit policy view"
+    },
+    "Real Estate": {
+      "headwind": "Inventory overhang, approval delays and RERA compliance load.",
+      "risk_points": 15,
+      "regulatory_risk": "Moderate",
+      "watch_items": ["Unsold inventory months", "RERA compliance status", "Land bank funding mix"],
+      "last_reviewed": "2026-09-13",
+      "source": "Analyst baseline - internal credit policy view"
+    },
+    "NBFC": {
+      "headwind": "Funding cost pressure and asset quality scrutiny under tighter RBI norms.",
+      "risk_points": 14,
+      "regulatory_risk": "Moderate",
+      "watch_items": ["ALM mismatch", "Collection efficiency", "RBI norm changes"],
+      "last_reviewed": "2026-09-13",
+      "source": "Analyst baseline - internal credit policy view"
+    }
+  },
+
+  "_fallback": {
+    "headwind": "Mixed sector outlook; no dedicated profile on file.",
+    "risk_points": 10,
+    "regulatory_risk": "Low",
+    "watch_items": [],
+    "last_reviewed": "2026-09-13",
+    "source": "Generic fallback - no sector profile available"
+  }
+}

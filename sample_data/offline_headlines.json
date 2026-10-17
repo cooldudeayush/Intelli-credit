@@ -1,0 +1,35 @@
+{
+  "_comment": "Synthetic fixture headlines used only when live research cannot reach the network. These are NOT real reporting. Every title is prefixed with [OFFLINE SAMPLE] at load time so the label survives into the UI and the exported CAM. {company} and {sector} are substituted at load time.",
+
+  "_default": [
+    { "label": "sector", "title": "{sector} sector faces margin pressure as input costs stay elevated" },
+    { "label": "regulatory", "title": "Regulatory review of {sector} compliance norms continues" }
+  ],
+
+  "Manufacturing": [
+    { "label": "sector", "title": "Manufacturing sector sees slowdown in export order book" },
+    { "label": "regulatory", "title": "Pollution control board issues show cause notice to units in industrial belt" },
+    { "label": "promoter", "title": "Mid-cap manufacturers report stake sale activity among promoter groups" }
+  ],
+
+  "Infrastructure": [
+    { "label": "insolvency", "title": "Infrastructure contractor admitted to NCLT over payment default" },
+    { "label": "sector", "title": "Infrastructure sector working capital cycles stretch on delayed government receivables" },
+    { "label": "litigation", "title": "Arbitration tribunal hears claims over stalled highway project" }
+  ],
+
+  "Retail": [
+    { "label": "sector", "title": "Retail sector discounting intensifies as demand stays uneven" },
+    { "label": "litigation", "title": "Consumer court summons issued to retail chains over warranty claims" }
+  ],
+
+  "Pharma": [
+    { "label": "regulatory", "title": "Drug regulator flags non-compliance at formulation facilities" },
+    { "label": "sector", "title": "Pharma price caps widen under revised essential medicines list" }
+  ],
+
+  "IT Services": [
+    { "label": "sector", "title": "IT services sector sees client budget cuts in key geographies" },
+    { "label": "promoter", "title": "Mid-tier IT firms report senior management resignation churn" }
+  ]
+}
