@@ -194,3 +194,47 @@ def test_news_adjustments_join_the_single_ledger(model_bundle):
     )
     ledger_signals = {a.get("signal") for a in result["all_adjustments"]}
     assert "Financial distress" in ledger_signals
+
+
+# ---------------------------------------------------------------------------
+# Startup robustness: the sector selector renders on first paint, before any
+# upload, so anything it depends on must never fail open.
+# ---------------------------------------------------------------------------
+
+
+def test_sector_list_is_never_empty(monkeypatch):
+    """An empty options list with index=0 raises and takes the whole app down.
+
+    This is what a deployed instance looks like when the profile file cannot be
+    read: a bare "Error running app" with no further detail.
+    """
+    from pathlib import Path
+
+    from modules import research_insights
+
+    research_insights._load_profiles.cache_clear()
+    monkeypatch.setattr(
+        research_insights, "SECTOR_PROFILE_PATH", Path("does/not/exist.json")
+    )
+    try:
+        sectors = research_insights.available_sectors()
+        assert sectors, "Sector list fell back to empty - the selectbox would raise"
+        assert "Manufacturing" in sectors
+    finally:
+        research_insights._load_profiles.cache_clear()
+
+
+def test_sector_profile_lookup_survives_a_missing_file(monkeypatch):
+    from pathlib import Path
+
+    from modules import research_insights
+
+    research_insights._load_profiles.cache_clear()
+    monkeypatch.setattr(
+        research_insights, "SECTOR_PROFILE_PATH", Path("does/not/exist.json")
+    )
+    try:
+        profile = research_insights.get_sector_profile("Manufacturing")
+        assert profile.get("risk_points") is not None
+    finally:
+        research_insights._load_profiles.cache_clear()

@@ -39,9 +39,26 @@ def get_sector_profile(sector: str) -> Dict:
     return sectors.get(sector, fallback)
 
 
+# Used when the profile file cannot be read at all. The selector is rendered
+# before anything is uploaded, so returning an empty list here would crash the
+# whole app at startup rather than degrading quietly.
+_BUILTIN_SECTORS = [
+    "Manufacturing",
+    "Infrastructure",
+    "Retail",
+    "Pharma",
+    "IT Services",
+]
+
+
 def available_sectors() -> List[str]:
-    """Sectors with a dedicated profile, for the UI selector."""
-    return sorted(_load_profiles().get("sectors", {}).keys())
+    """Sectors with a dedicated profile, for the UI selector.
+
+    Never returns an empty list: an empty options list with index=0 raises, and
+    this feeds a selectbox that renders on first paint.
+    """
+    sectors = sorted(_load_profiles().get("sectors", {}).keys())
+    return sectors or list(_BUILTIN_SECTORS)
 
 
 def generate_research_insights(

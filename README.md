@@ -215,8 +215,10 @@ UI in React and running the Python behind a separate API — two services instea
 
 Two things to know before deploying:
 
-- `packages.txt` installs the Tesseract binary. Without it OCR silently falls back, so
-  scanned-PDF support would not actually work on the deployed instance.
+- **OCR is disabled on the hosted instance.** Tesseract is a system binary, installed via a
+  `packages.txt` apt step. That step is an extra way for a build to fail, so it is not
+  committed — scanned PDFs fall back gracefully instead. To enable it, add a `packages.txt`
+  containing `tesseract-ocr` and redeploy.
 - `requirements.txt` deliberately uses **version ranges, not exact pins**. Hosts choose
   their own Python version, and an exact pin to a Python-3.13-only wheel makes the build
   fail with nothing but *"Error running app"*. Verified installing and passing all 135

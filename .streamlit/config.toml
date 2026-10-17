@@ -1,6 +1,8 @@
 # Intelli-Credit theme.
-# Pinned so the app looks identical on any machine, rather than inheriting
-# whatever theme the viewer's Streamlit happens to default to.
+#
+# Theme only. Server and browser options are deliberately NOT set here: hosting
+# platforms manage those themselves, and overriding them from the repo is a
+# common cause of a deploy that builds but will not start.
 
 [theme]
 base = "light"
@@ -11,11 +13,3 @@ primaryColor = "#1B4F8C"
 backgroundColor = "#F6F8FC"
 secondaryBackgroundColor = "#FFFFFF"
 textColor = "#111C2E"
-
-font = "sans serif"
-
-[server]
-headless = true
-
-[browser]
-gatherUsageStats = false
