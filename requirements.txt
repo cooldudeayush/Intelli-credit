@@ -1,36 +1,47 @@
 # Intelli-Credit runtime dependencies.
-# Pinned to exact versions for reproducible builds — a fresh clone must resolve
-# to the same set the golden tests were baselined against.
-# Verified against Python 3.13.7.
+#
+# These are deliberately RANGES, not exact pins. Hosting platforms (Streamlit
+# Community Cloud, Hugging Face Spaces) choose their own Python version, and an
+# exact pin to a wheel that only exists for Python 3.13 makes the build fail
+# with nothing but "Error running app".
+#
+# Floors are set to the oldest release that supports every API this project
+# uses; the upper bounds guard against the next major version changing
+# behaviour underneath us. Verified against Python 3.11 and 3.13.
+#
+# For a byte-identical local environment (what the golden tests were baselined
+# against), use requirements-lock.txt instead, which keeps the exact versions.
 
 # --- UI ---
-streamlit==1.63.0
+# 1.36 introduced vertical_alignment on st.columns, used in the borrower header.
+streamlit>=1.37,<2
 
 # --- Data ---
-pandas==3.0.5
-numpy==2.5.3
-openpyxl==3.1.5
+# The code uses .ffill() rather than the fillna(method=) removed in pandas 3,
+# so it runs on both 2.x and 3.x.
+pandas>=2.0,<4
+numpy>=1.26,<3
+openpyxl>=3.1,<4
 
 # --- PDF parsing ---
-pdfplumber==0.11.10
-PyPDF2==3.0.1
+pdfplumber>=0.11,<1
+PyPDF2>=3.0,<4
 
 # --- OCR fallback ---
 # pypdfium2 renders PDF pages to images; pytesseract runs Tesseract over them.
-# Both are required for modules/ingestion.py::_ocr_pdf_extract. pypdfium2 was
-# previously undeclared, which silently disabled scanned-PDF support on any
-# clean install.
-# NOTE: pytesseract is only a wrapper — the Tesseract binary must also be
-# installed on the host and be on PATH. See README for platform instructions.
-pypdfium2==5.13.0
-pytesseract==0.3.13
+# Both are required by modules/ingestion.py::_ocr_pdf_extract.
+# NOTE: pytesseract is only a wrapper - the Tesseract binary must also exist on
+# the host. packages.txt installs it on Streamlit Cloud and Hugging Face Spaces;
+# locally, install it yourself (see README).
+pypdfium2>=4.25,<6
+pytesseract>=0.3.10,<1
 
 # --- ML ---
-scikit-learn==1.9.1
+scikit-learn>=1.4,<2
 
 # --- Report export ---
-python-docx==1.2.0
-reportlab==5.0.1
+python-docx>=1.1,<2
+reportlab>=4.0,<6
 
-# --- Optional live research ---
-feedparser==6.0.14
+# --- Secondary research ---
+feedparser>=6.0.10,<7

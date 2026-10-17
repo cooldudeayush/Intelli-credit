@@ -217,9 +217,11 @@ Two things to know before deploying:
 
 - `packages.txt` installs the Tesseract binary. Without it OCR silently falls back, so
   scanned-PDF support would not actually work on the deployed instance.
-- `requirements.txt` is pinned against Python 3.13. If a host defaults to an older Python
-  and a wheel is unavailable, relaxing the `pandas` pin is safe — the code uses `.ffill()`
-  rather than the removed `fillna(method=)`, so it runs on pandas 2.x as well.
+- `requirements.txt` deliberately uses **version ranges, not exact pins**. Hosts choose
+  their own Python version, and an exact pin to a Python-3.13-only wheel makes the build
+  fail with nothing but *"Error running app"*. Verified installing and passing all 135
+  tests on both Python 3.11 and 3.13. For a byte-identical local environment, use
+  `requirements-lock.txt`.
 
 ---
 
