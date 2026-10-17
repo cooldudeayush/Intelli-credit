@@ -193,6 +193,32 @@ tests/                     135 tests across 10 files
 
 ---
 
+## Deploying it
+
+The whole system is one Streamlit process — no separate API, no database — so there is
+exactly one thing to host.
+
+| Platform | Free? | Notes |
+|---|---|---|
+| **Streamlit Community Cloud** | Yes | Point it at this repo and `app.py`. Reads `requirements.txt` and `packages.txt` automatically |
+| **Hugging Face Spaces** | Yes | Choose the Streamlit SDK. Same two files are picked up |
+| Render | Free tier | Spins down after 15 min idle; first visit then takes ~50s |
+| Railway | No longer free | Trial credit only |
+
+**Vercel will not work.** Streamlit is a long-lived stateful server holding a WebSocket per
+session; Vercel runs stateless short-lived functions. Hosting there would mean rewriting the
+UI in React and running the Python behind a separate API — two services instead of one.
+
+Two things to know before deploying:
+
+- `packages.txt` installs the Tesseract binary. Without it OCR silently falls back, so
+  scanned-PDF support would not actually work on the deployed instance.
+- `requirements.txt` is pinned against Python 3.13. If a host defaults to an older Python
+  and a wheel is unavailable, relaxing the `pandas` pin is safe — the code uses `.ffill()`
+  rather than the removed `fillna(method=)`, so it runs on pandas 2.x as well.
+
+---
+
 ## Tests
 
 ```bash
