@@ -7,6 +7,10 @@ supplied, scores creditworthiness on the Five Cs, takes a second opinion from a 
 learning model, and produces a 29-section Credit Appraisal Memo — with a written reason
 for every point it awards or deducts.
 
+**Live app: https://intelli-credit-genx.streamlit.app/**
+*(hosted on Streamlit Community Cloud — the free tier hibernates inactive apps, so the first
+visit may take 30–60 seconds to wake)*
+
 Built for the National AI/ML Hackathon (IIT Hyderabad · Vivriti Capital).
 
 ---
